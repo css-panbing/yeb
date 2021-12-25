@@ -51,5 +51,5 @@ jwt:
   secret: yeb-secret
   # JWT的超期限时间（60*60*24）
   expiration: 604800
-  # JWT 负载中拿到开头
+  # JWT 荷载中拿到开头
   tokenHead: Bearer

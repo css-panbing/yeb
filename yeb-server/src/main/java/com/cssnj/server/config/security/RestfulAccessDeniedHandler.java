@@ -27,7 +27,7 @@ public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         ResponseData data = ResponseData.error("权限不足，请联系管理员！");
-        data.setCode(401);
+        data.setCode(403);
         out.write(new ObjectMapper().writeValueAsString(data));
         out.flush();
         out.close();

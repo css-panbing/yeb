@@ -5,6 +5,7 @@ import com.cssnj.server.common.response.ResponseData;
 import com.cssnj.server.config.security.JwtTokenUtil;
 import com.cssnj.server.pojo.Admin;
 import com.cssnj.server.mapper.AdminMapper;
+import com.cssnj.server.pojo.AdminLogin;
 import com.cssnj.server.service.IAdminService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -45,22 +47,25 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
 
     /**
      * 登录之后返回Token
-     * @param username
-     * @param password
+     * @param adminLogin
      * @param request
      * @return
      */
     @Override
-    public ResponseData login(String username, String password, HttpServletRequest request) {
-        //登录
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        if(userDetails == null || !passwordEncoder.matches(password, userDetails.getPassword())){
-            return ResponseData.error("用户名或者密码不正确");
+    public ResponseData login(AdminLogin adminLogin, HttpServletRequest request) {
+        String captcha = (String) request.getSession().getAttribute("captcha");
+        if("".equals(adminLogin.getCode()) || !captcha.equalsIgnoreCase(adminLogin.getCode())){
+            return ResponseData.error("验证码错误，请重新输入！");
+        }
+        //重写UserDetailsService.loadUserByUsername()方法实现登录
+        UserDetails userDetails = userDetailsService.loadUserByUsername(adminLogin.getUsername());
+        if(userDetails == null || !passwordEncoder.matches(adminLogin.getPassword(), userDetails.getPassword())){
+            return ResponseData.error("用户名或密码不正确！");
         }
         if(!userDetails.isEnabled()){
-            return ResponseData.error("该用户被禁用，请联系管理员");
+            return ResponseData.error("账号被禁用，请联系管理员！");
         }
-        //更新Security中登录用户信息
+        //登录成功，更新Security登录用户信息（把登录用户信息放在Security全文中）
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
@@ -68,8 +73,8 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         String token = jwtTokenUtil.generateToken(userDetails);
         Map<String, Object> tokenMap = new HashMap<>();
         tokenMap.put("token", token);
-        tokenMap.put("tokenHead", tokenHead);
-        return ResponseData.success("登录成功", tokenMap);
+        tokenMap.put("tokenHead", tokenHead);//头部信息，供前端放在请求头中
+        return ResponseData.success("登录成功！", tokenMap);
     }
 
     /**

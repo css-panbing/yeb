@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
+ * Security配置类
+ *
  * @author panbing
  * @date 2021/12/16 20:41
  */
@@ -31,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        // 指定使用自定义查询用户信息来完成身份认证
         auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
     }
 
@@ -40,8 +43,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * @throws Exception
      */
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/login", "/logout", "/css/**", "/js/**", "/index.html",
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/login", "/logout", "/captcha", "/css/**", "/js/**", "/index.html",
                 "favicon.ico", "/doc.html", "/webjars/**", "/swagger-resources/**", "/v2/api-docs/**");
     }
 
@@ -60,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 禁用缓存
                 .headers()
                 .cacheControl();
-        // 添加JWT登录授权拦截器
+        // 添加JWT 登录授权拦截器
         http.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         // 添加自定义未授权和未登录结果返回
         http.exceptionHandling()
@@ -75,6 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     @Bean
     public UserDetailsService userDetailsService(){
+        //Lambda表达式，例：接收一个参数(数字类型),返回其2倍的值  x -> 2 * x
         return username -> {
             Admin admin = adminService.getAdminByUsername(username);
             if(admin != null){
@@ -89,6 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
     public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter(){
         return new JwtAuthenticationTokenFilter();
     }

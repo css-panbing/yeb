@@ -23,7 +23,11 @@ import java.util.List;
 @Configuration
 @EnableSwagger2
 public class Swagger2Config {
-    
+
+    /**
+     * 扫描哪些包下面生成接口文档
+     * @return
+     */
     @Bean
     public Docket createRestApi(){
         //paths(PathSelectors.xxx)
@@ -58,16 +62,22 @@ public class Swagger2Config {
                 .build();
     }
 
+    /**
+     * 设置请求头信息
+     * @return
+     */
     private List<ApiKey> securitySchemes(){
-        // 设置请求头信息
         List<ApiKey> result = new ArrayList<>();
         ApiKey apiKey = new ApiKey("Authorization", "Authorization", "Header");
         result.add(apiKey);
         return result;
     }
 
+    /**
+     * 设置需要登录认证的路径
+     * @return
+     */
     private List<SecurityContext> securityContexts(){
-        // 设置需要登录认证的路径
         List<SecurityContext> result = new ArrayList<>();
         result.add(getContextByPath("/hello/.*"));
         return result;
@@ -80,7 +90,10 @@ public class Swagger2Config {
                 .build();
     }
 
-    // 默认的授权
+    /**
+     * 默认的授权
+     * @return
+     */
     private List<SecurityReference> defaultAuth(){
         List<SecurityReference> result = new ArrayList<>();
         //授权范围

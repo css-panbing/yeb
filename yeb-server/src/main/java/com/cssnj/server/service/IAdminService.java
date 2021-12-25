@@ -3,6 +3,7 @@ package com.cssnj.server.service;
 import com.cssnj.server.common.response.ResponseData;
 import com.cssnj.server.pojo.Admin;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.cssnj.server.pojo.AdminLogin;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,13 +18,12 @@ import javax.servlet.http.HttpServletRequest;
 public interface IAdminService extends IService<Admin> {
 
     /**
-     * 登录之后返回Token
-     * @param username
-     * @param password
+     * 登录并返回Token
+     * @param adminLogin
      * @param request
      * @return
      */
-    ResponseData login(String username, String password, HttpServletRequest request);
+    ResponseData login(AdminLogin adminLogin, HttpServletRequest request);
 
     /**
      * 根据用户名获取用户信息
