@@ -4,15 +4,14 @@ import com.cssnj.server.pojo.Admin;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
 
+
 /**
- * <p>
- *  Mapper 接口
- * </p>
+ *  用户 Mapper 接口
  *
  * @author panbing
  * @since 2021-12-16
  */
-@Repository()
+@Repository
 public interface AdminMapper extends BaseMapper<Admin> {
 
 }

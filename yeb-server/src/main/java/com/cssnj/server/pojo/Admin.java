@@ -15,9 +15,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
- * <p>
- * 
- * </p>
+ * 用户类
  *
  * @author panbing
  * @since 2021-12-16
