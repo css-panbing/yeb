@@ -2,6 +2,7 @@ package com.cssnj.server.mapper;
 
 import com.cssnj.server.pojo.Menu;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.cssnj.server.pojo.Role;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,4 +23,9 @@ public interface MenuMapper extends BaseMapper<Menu> {
      */
     List<Menu> getMenuByAdminId(Integer id);
 
+    /**
+     * 根据角色获取菜单列表
+     * @return
+     */
+    List<Menu> getMenusWithRole();
 }

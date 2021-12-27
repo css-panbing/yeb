@@ -3,6 +3,7 @@ package com.cssnj.server.service.impl;
 import com.cssnj.server.pojo.Admin;
 import com.cssnj.server.pojo.Menu;
 import com.cssnj.server.mapper.MenuMapper;
+import com.cssnj.server.pojo.Role;
 import com.cssnj.server.service.IMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,16 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
             // 将菜单数据存入到Redis中
             valueOperations.set("menu_"+admin.getId(), menus);
         }
+        return menus;
+    }
+
+    /**
+     * 根据角色获取菜单列表
+     * @return
+     */
+    @Override
+    public List<Menu> getMenusWithRole() {
+        List<Menu> menus = menuMapper.getMenusWithRole();
         return menus;
     }
 }

@@ -1,4 +1,4 @@
-package com.cssnj.server.config.security;
+package com.cssnj.server.config.security.component;
 
 import com.cssnj.server.common.response.ResponseData;
 import com.fasterxml.jackson.databind.ObjectMapper;

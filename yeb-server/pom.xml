@@ -91,6 +91,7 @@
       <version>0.0.9</version>
     </dependency>
 
+    <!-- Redis缓存应用 -->
     <!-- spring data redis依赖 -->
     <dependency>
       <groupId>org.springframework.boot</groupId>

@@ -2,11 +2,12 @@ package com.cssnj.server.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cssnj.server.common.response.ResponseData;
-import com.cssnj.server.config.security.JwtTokenUtil;
+import com.cssnj.server.config.security.component.JwtTokenUtil;
+import com.cssnj.server.mapper.RoleMapper;
 import com.cssnj.server.pojo.Admin;
 import com.cssnj.server.mapper.AdminMapper;
 import com.cssnj.server.pojo.AdminLogin;
-import com.cssnj.server.pojo.Menu;
+import com.cssnj.server.pojo.Role;
 import com.cssnj.server.service.IAdminService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -43,6 +43,8 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private AdminMapper adminMapper;
+    @Autowired
+    private RoleMapper roleMapper;
 
     @Value("${jwt.tokenHeader}")
     private String tokenHead;
@@ -88,6 +90,17 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     public Admin getAdminByUsername(String username) {
         Admin admin = adminMapper.selectOne(new QueryWrapper<Admin>().eq("username", username).eq("enabled", true));
         return admin;
+    }
+
+    /**
+     * 根据用户id查询角色列表
+     * @param adminId
+     * @return
+     */
+    @Override
+    public List<Role> getRolesWithAdminId(Integer adminId) {
+        List<Role> roles = roleMapper.getRolesWithAdminId(adminId);
+        return roles;
     }
 
 }

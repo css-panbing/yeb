@@ -1,4 +1,4 @@
-package com.cssnj.server.config.security;
+package com.cssnj.server.config.security.component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

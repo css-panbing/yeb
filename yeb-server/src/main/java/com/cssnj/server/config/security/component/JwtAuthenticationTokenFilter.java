@@ -1,4 +1,4 @@
-package com.cssnj.server.config.security;
+package com.cssnj.server.config.security.component;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
