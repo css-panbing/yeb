@@ -26,7 +26,7 @@ import java.util.Map;
 
 /**
  * <p>
- *  服务实现类
+ *  用户服务实现类
  * </p>
  *
  * @author panbing
@@ -46,7 +46,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     @Autowired
     private RoleMapper roleMapper;
 
-    @Value("${jwt.tokenHeader}")
+    @Value("${jwt.tokenHead}")
     private String tokenHead;
 
     /**
@@ -58,13 +58,17 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     @Override
     public ResponseData login(AdminLogin adminLogin, HttpServletRequest request) {
         String captcha = (String) request.getSession().getAttribute("captcha");
+        //从session中获取验证码与前端传递过来的验证码进行匹配
         if("".equals(adminLogin.getCode()) || !captcha.equalsIgnoreCase(adminLogin.getCode())){
             return ResponseData.error("验证码错误，请重新输入！");
         }
-        //重写UserDetailsService.loadUserByUsername()方法实现登录
+        //重写UserDetailsService.loadUserByUsername()方法实现登录（通过前端传递的用户名获取用户信息）
         UserDetails userDetails = userDetailsService.loadUserByUsername(adminLogin.getUsername());
-        if(userDetails == null || !passwordEncoder.matches(adminLogin.getPassword(), userDetails.getPassword())){
-            return ResponseData.error("用户名或密码不正确！");
+        if(userDetails == null){
+            return ResponseData.error("用户名不存在！");
+        }
+        if(!passwordEncoder.matches(adminLogin.getPassword(), userDetails.getPassword())){
+            return ResponseData.error("密码错误！");
         }
         if(!userDetails.isEnabled()){
             return ResponseData.error("账号被禁用，请联系管理员！");
@@ -88,7 +92,8 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
      */
     @Override
     public Admin getAdminByUsername(String username) {
-        Admin admin = adminMapper.selectOne(new QueryWrapper<Admin>().eq("username", username).eq("enabled", true));
+//        Admin admin = adminMapper.selectOne(new QueryWrapper<Admin>().eq("username", username).eq("enabled", true));
+        Admin admin = adminMapper.selectOne(new QueryWrapper<Admin>().eq("username", username));
         return admin;
     }
 

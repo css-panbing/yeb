@@ -3,7 +3,6 @@ package com.cssnj.server.service.impl;
 import com.cssnj.server.pojo.Admin;
 import com.cssnj.server.pojo.Menu;
 import com.cssnj.server.mapper.MenuMapper;
-import com.cssnj.server.pojo.Role;
 import com.cssnj.server.service.IMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务实现类
+ *  菜单服务实现类
  * </p>
  *
  * @author panbing
@@ -44,7 +43,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         List<Menu> menus = (List<Menu>) valueOperations.get("menu_"+admin.getId());
         // 如果Redis中没有获取到则去数据库中查询
         if(CollectionUtils.isEmpty(menus)){
-           menus = menuMapper.getMenuByAdminId(admin.getId());
+            menus = menuMapper.getMenuByAdminId(admin.getId());
             // 将菜单数据存入到Redis中
             valueOperations.set("menu_"+admin.getId(), menus);
         }
@@ -60,4 +59,14 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         List<Menu> menus = menuMapper.getMenusWithRole();
         return menus;
     }
+
+    /**
+     * 查询所有菜单
+     * @return
+     */
+    @Override
+    public List<Menu> getAllMenus() {
+        return menuMapper.getAllMenus();
+    }
+
 }

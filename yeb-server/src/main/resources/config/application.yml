@@ -1,6 +1,9 @@
 server:
   # 端口
   port: 8081
+  # 配置根路径
+  servlet:
+    context-path: /yeb
 spring:
   # 允许循环依赖
   main:

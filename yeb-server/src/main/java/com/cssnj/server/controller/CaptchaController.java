@@ -3,10 +3,10 @@ package com.cssnj.server.controller;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -15,13 +15,15 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
- * 验证码
+ * 验证码Controller
  * @author panbing
  * @date 2021/12/25 16:36
  */
 @RestController
 @Api(tags = "验证码")
 public class CaptchaController {
+
+    static final Logger logger = Logger.getLogger(CaptchaController.class);
 
     @Autowired
     private DefaultKaptcha defaultKaptcha;
@@ -43,7 +45,7 @@ public class CaptchaController {
         //-------------------生成验证码 begin --------------------------
         // 获取验证码文本内容
         String text = defaultKaptcha.createText();
-        System.out.println("验证码内容："+text);
+        logger.info("获取的验证码文本内容："+text);
         // 将验证码文本内容放入session
         request.getSession().setAttribute("captcha", text);
         // 根据文本内容创建图形验证码
@@ -55,13 +57,13 @@ public class CaptchaController {
             ImageIO.write(image, "jpg", outputStream);
             outputStream.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("输出验证码图片流异常："+e);
         } finally {
             if(outputStream != null){
                 try {
                     outputStream.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.error("关闭输出流异常："+e);
                 }
             }
         }

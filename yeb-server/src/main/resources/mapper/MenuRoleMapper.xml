@@ -13,5 +13,13 @@
     <sql id="Base_Column_List">
         id, mid, rid
     </sql>
+    <!--批量插入菜单角色关联信息-->
+    <insert id="insertList">
+        insert into t_menu_role(mid, rid) values
+        <foreach collection="mids" item="mid" separator=",">
+            (#{mid}, #{rid})
+        </foreach>
+    </insert>
+
 
 </mapper>
