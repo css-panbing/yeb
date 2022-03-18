@@ -2,7 +2,6 @@ package com.cssnj.server.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cssnj.server.common.response.ResponseData;
-import com.cssnj.server.pojo.Menu;
 import com.cssnj.server.pojo.MenuRole;
 import com.cssnj.server.mapper.MenuRoleMapper;
 import com.cssnj.server.service.IMenuRoleService;
@@ -10,8 +9,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  *  角色菜单关联 实现类

@@ -1,7 +1,5 @@
 package com.cssnj.server.controller;
 
-
-import com.cssnj.server.common.response.ResponseData;
 import com.cssnj.server.pojo.Menu;
 import com.cssnj.server.service.IMenuService;
 import io.swagger.annotations.Api;
@@ -30,8 +28,8 @@ public class MenuController {
 
     @ApiOperation(value = "通过用户ID查询菜单列表")
     @GetMapping("/menu")
-    public List<Menu> getMenuByAdminId(){
-        return menuService.getMenuByAdminId();
+    public List<Menu> getMenusByAdminId(){
+        return menuService.getMenusByAdminId();
     }
 
 

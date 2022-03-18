@@ -36,14 +36,15 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
      * @return
      */
     @Override
-    public List<Menu> getMenuByAdminId() {
+    public List<Menu> getMenusByAdminId() {
         Admin admin = (Admin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
         // 从Redis中获取菜单数据
         List<Menu> menus = (List<Menu>) valueOperations.get("menu_"+admin.getId());
         // 如果Redis中没有获取到则去数据库中查询
         if(CollectionUtils.isEmpty(menus)){
-            menus = menuMapper.getMenuByAdminId(admin.getId());
+            //menus = menuMapper.getMenuByAdminId(admin.getId());//通过用户ID获取菜单列表（不推荐：通过表关联只能查询固定层级菜单树）
+            menus = menuMapper.getMenusByAdminId(admin.getId());//通过用户ID获取菜单列表（推荐：调用向下递归方法查询菜单树）
             // 将菜单数据存入到Redis中
             valueOperations.set("menu_"+admin.getId(), menus);
         }

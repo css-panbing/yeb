@@ -56,7 +56,7 @@
         id, url, path, component, name, iconCls, keepAlive, requireAuth, parentId, enabled
     </sql>
 
-    <!-- 通过用户ID查询菜单列表 -->
+    <!-- 通过用户ID查询菜单列表（不推荐：通过表关联只能查询固定层级的菜单树） -->
     <select id="getMenuByAdminId" resultMap="Menus">
         SELECT
             DISTINCT
@@ -83,6 +83,21 @@
           AND m2.enabled = TRUE
           AND ar.adminId = #{id}
         ORDER BY m1.id
+    </select>
+
+    <!-- 通过用户ID查询菜单列表（推荐：调用自定义向下递归的方法查询菜单树 -->
+    <select id="getMenusByAdminId" resultMap="com.cssnj.server.mapper.AdminMapper.BaseResultMap">
+        SELECT
+            m.*
+        FROM
+            t_menu m,
+            t_menu_role mr,
+            t_admin_role ar
+        WHERE
+            FIND_IN_SET(m.id, get_child_list ( '1' ))
+          AND m.id = mr.mid
+          AND mr.rid = ar.rid
+          AND ar.adminId = #{id};
     </select>
 
     <!-- 根据角色查询菜单 -->
