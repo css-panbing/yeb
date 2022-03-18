@@ -2,6 +2,7 @@ package com.cssnj.server.exception;
 
 import com.cssnj.server.common.response.ResponseData;
 import org.apache.log4j.Logger;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -28,6 +29,12 @@ public class GlobalException {
         }
         logger.error("数据库操作异常："+sqlException);
         return ResponseData.error("数据库异常，操作失败！");
+    }
+
+    @ExceptionHandler(RedisConnectionFailureException.class)
+    public ResponseData redisConnectionFailureException(RedisConnectionFailureException redisException){
+        logger.error("Redis连接异常："+redisException);
+        return ResponseData.error("Redis连接异常");
     }
 
 }

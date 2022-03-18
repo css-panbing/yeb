@@ -13,7 +13,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -34,7 +36,7 @@ public class PermissionController {
     private IMenuRoleService menuRoleService;
 
     @ApiOperation("获取所有角色")
-    @GetMapping("/role/")
+    @GetMapping("/roles/")
     public List<Role> getAllRoles(){
         return roleService.list();
     }
@@ -53,7 +55,7 @@ public class PermissionController {
 
     @ApiOperation("删除角色")
     @DeleteMapping("/role/{rid}")
-    public ResponseData deleteRole(@PathVariable Integer rid){
+    public ResponseData deleteRole(@PathVariable("rid") Integer rid){
         if(roleService.removeById(rid)){
             return ResponseData.success("删除成功");
         }
@@ -61,20 +63,32 @@ public class PermissionController {
     }
 
     @ApiOperation("查询所有菜单")
-    @GetMapping("/role/menus/")
+    @GetMapping("/menus/")
     public List<Menu> getAllMenus(){
         return menuService.getAllMenus();
     }
 
-    @ApiOperation("根据角色id查询所有菜单id")
-    @GetMapping("/role/menus/{rid}")
-    public List<Integer> getAllMenusByRole(@PathVariable Integer rid){
+    @ApiOperation("根据角色id查询相关联菜单id")
+    @GetMapping("/menuIds/{rid}")
+    public List<Integer> getAllMenusByRole(@PathVariable("rid") Integer rid){
         List<MenuRole> list = menuRoleService.list(new QueryWrapper<MenuRole>().eq("rid", rid));
         return list.stream().map(MenuRole::getMid).collect(Collectors.toList());
     }
 
+    @ApiOperation("查询所有菜单、根据角色id查询相关关联菜单id")
+    @GetMapping("/menus/role/{rid}")
+    public Map getMenusByRole(@PathVariable("rid") Integer rid){
+        HashMap map = new HashMap();
+        List<Menu> menus = menuService.getAllMenus();
+        List<MenuRole> list = menuRoleService.list(new QueryWrapper<MenuRole>().eq("rid", rid));
+        List<Integer> menuIds = list.stream().map(MenuRole::getMid).collect(Collectors.toList());
+        map.put("menus", menus);
+        map.put("menuIds", menuIds);
+        return map;
+    }
+
     @ApiOperation("更新角色关联菜单")
-    @PutMapping("/role/")
+    @PutMapping("/role/menus/")
     public ResponseData updateRole(Integer rid, Integer [] mids){
         return menuRoleService.updateMenuRole(rid, mids);
     }
