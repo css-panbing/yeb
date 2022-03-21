@@ -24,16 +24,16 @@ public class GlobalException {
     @ExceptionHandler(SQLException.class)
     public ResponseData mySqlException(SQLException sqlException){
         if(sqlException instanceof SQLIntegrityConstraintViolationException){
-            logger.error("数据库操作异常："+sqlException);
+            logger.error("数据库操作异常", sqlException);
             return ResponseData.error("该数据有关联数据，操作失败！");
         }
-        logger.error("数据库操作异常："+sqlException);
+        logger.error("数据库操作异常", sqlException);
         return ResponseData.error("数据库异常，操作失败！");
     }
 
     @ExceptionHandler(RedisConnectionFailureException.class)
     public ResponseData redisConnectionFailureException(RedisConnectionFailureException redisException){
-        logger.error("Redis连接异常："+redisException);
+        logger.error("Redis连接异常", redisException);
         return ResponseData.error("Redis连接异常");
     }
 

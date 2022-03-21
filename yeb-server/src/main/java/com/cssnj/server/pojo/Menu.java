@@ -59,6 +59,9 @@ public class Menu implements Serializable {
     @ApiModelProperty(value = "是否启用")
     private Boolean enabled;
 
+    @ApiModelProperty(value = "排序")
+    private Integer orderNumber;
+
     @ApiModelProperty(value = "子菜单")
     @TableField(exist = false)
     private List<Menu> children;

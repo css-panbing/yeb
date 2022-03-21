@@ -14,6 +14,7 @@
         <result column="requireAuth" property="requireAuth" />
         <result column="parentId" property="parentId" />
         <result column="enabled" property="enabled" />
+        <result column="orderNumber" property="orderNumber" />
     </resultMap>
     <!-- 菜单映射结果 -->
     <resultMap id="Menus" type="com.cssnj.server.pojo.Menu" extends="BaseResultMap">
@@ -28,6 +29,7 @@
             <result column="requireAuth2" property="requireAuth" />
             <result column="parentId2" property="parentId" />
             <result column="enabled2" property="enabled" />
+            <result column="orderNumber2" property="orderNumber" />
         </collection>
     </resultMap>
     <resultMap id="MenusWithRole" type="com.cssnj.server.pojo.Menu" extends="BaseResultMap">
@@ -53,7 +55,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, url, path, component, name, iconCls, keepAlive, requireAuth, parentId, enabled
+        id, url, path, component, name, iconCls, keepAlive, requireAuth, parentId, enabled, orderNumber
     </sql>
 
     <!-- 通过用户ID查询菜单列表（不推荐：通过表关联只能查询固定层级的菜单树） -->
@@ -70,7 +72,8 @@
             m2.keepAlive AS keepAlive2,
             m2.requireAuth AS requireAuth2,
             m2.parentId AS parentId2,
-            m2.enabled AS enabled2
+            m2.enabled AS enabled2,
+            m2.orderNumber AS orderNumber2
         FROM
             t_menu m1,
             t_menu m2,
@@ -82,11 +85,11 @@
           AND mr.rid = ar.rid
           AND m2.enabled = TRUE
           AND ar.adminId = #{id}
-        ORDER BY m1.id
+        ORDER BY m1.parentId, m1.orderNumber
     </select>
 
     <!-- 通过用户ID查询菜单列表（推荐：调用自定义向下递归的方法查询菜单树 -->
-    <select id="getMenusByAdminId" resultMap="com.cssnj.server.mapper.AdminMapper.BaseResultMap">
+    <select id="getMenusByAdminId" resultMap="BaseResultMap">
         SELECT
             m.*
         FROM
@@ -94,10 +97,11 @@
             t_menu_role mr,
             t_admin_role ar
         WHERE
-            FIND_IN_SET(m.id, get_child_list ( '1' ))
+            FIND_IN_SET(m.id, getMenuChildNodes ( '1' ))
           AND m.id = mr.mid
           AND mr.rid = ar.rid
-          AND ar.adminId = #{id};
+          AND ar.adminId = #{id}
+        ORDER BY m.parentId, m.orderNumber
     </select>
 
     <!-- 根据角色查询菜单 -->
@@ -114,7 +118,7 @@
         WHERE
             m.id = mr.mid
           AND mr.rid = r.id
-        ORDER BY m.id
+        ORDER BY m.parentId, m.orderNumber
     </select>
 
     <!--查询所有菜单-->

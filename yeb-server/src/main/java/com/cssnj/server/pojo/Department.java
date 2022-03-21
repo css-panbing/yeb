@@ -1,9 +1,14 @@
 package com.cssnj.server.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -46,5 +51,12 @@ public class Department implements Serializable {
     @ApiModelProperty(value = "是否上级")
     private Boolean isParent;
 
+    @ApiModelProperty(value = "创建时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/shanghai")
+    private LocalDateTime createDate;
+
+    @ApiModelProperty(value = "子部门")
+    @TableField(exist = false)
+    private List<Department> children;
 
 }

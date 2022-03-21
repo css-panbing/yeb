@@ -1,5 +1,6 @@
 package com.cssnj.server.service.impl;
 
+import com.cssnj.server.common.utils.MenuTreeNodeUtil;
 import com.cssnj.server.pojo.Admin;
 import com.cssnj.server.pojo.Menu;
 import com.cssnj.server.mapper.MenuMapper;
@@ -43,8 +44,10 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
         List<Menu> menus = (List<Menu>) valueOperations.get("menu_"+admin.getId());
         // 如果Redis中没有获取到则去数据库中查询
         if(CollectionUtils.isEmpty(menus)){
-            //menus = menuMapper.getMenuByAdminId(admin.getId());//通过用户ID获取菜单列表（不推荐：通过表关联只能查询固定层级菜单树）
-            menus = menuMapper.getMenusByAdminId(admin.getId());//通过用户ID获取菜单列表（推荐：调用向下递归方法查询菜单树）
+            menus = menuMapper.getMenuByAdminId(admin.getId());//通过用户ID获取菜单列表（不推荐：通过表关联只能查询固定层级菜单树）
+            //menus = menuMapper.getMenusByAdminId(admin.getId());//通过用户ID获取菜单列表（推荐：调用向下递归方法查询菜单树）,需要将查询结果加工成树状结构
+            //menus = MenuTreeNodeUtil.getChildrenNode(1, menus);//问题：这种加工方式只方便加工有一个最高节点的情况，多个最高平级节点无法加工
+
             // 将菜单数据存入到Redis中
             valueOperations.set("menu_"+admin.getId(), menus);
         }

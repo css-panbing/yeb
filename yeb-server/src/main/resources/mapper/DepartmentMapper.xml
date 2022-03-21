@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cssnj.server.mapper.DepartmentMapper">
 
-    <!-- 通用查询映射结果 -->
+    <!-- 通用部门查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.cssnj.server.pojo.Department">
         <id column="id" property="id" />
         <result column="name" property="name" />
@@ -10,11 +10,30 @@
         <result column="depPath" property="depPath" />
         <result column="enabled" property="enabled" />
         <result column="isParent" property="isParent" />
+        <result column="createDate" property="createDate" />
+    </resultMap>
+    <resultMap id="SelectTreeMap" type="com.cssnj.server.common.pojo.SelectTree">
+        <id column="id" property="id" />
+        <id column="parentId" property="pid" />
+        <result column="id" property="value" />
+        <result column="name" property="label" />
+        <result column="isParent" property="isParent" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, name, parentId, depPath, enabled, isParent
     </sql>
+    <!--获取所有部门列表-->
+    <select id="getAllDepartments" resultMap="BaseResultMap">
+        select t.id, t.name, t.parentId, t.enabled, t.isParent, t.createDate
+        from t_department t
+        where FIND_IN_SET(id,getDeptChildNodes(#{parentId}))
+    </select>
+    <select id="getDeptSelectTree" resultMap="SelectTreeMap">
+        select t.id, t.name, t.parentId, t.isParent
+        from t_department t
+        where FIND_IN_SET(id,getDeptChildNodes(-1))
+    </select>
 
 </mapper>

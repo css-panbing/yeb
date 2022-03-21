@@ -1,5 +1,7 @@
 package com.cssnj.server.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cssnj.server.common.page.PageInfo;
 import com.cssnj.server.common.response.ResponseData;
 import com.cssnj.server.pojo.Position;
 import com.cssnj.server.service.IPositionService;
@@ -9,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 职位管理
@@ -26,9 +30,13 @@ public class PositionController {
 
     @ApiOperation("查询所有职位信息")
     @GetMapping("/")
-    public List<Position> queryAllPositions(){
-        List<Position> positions = positionService.list();
-        return positions;
+    public Map queryAllPositions(PageInfo pageInfo){
+        HashMap map = new HashMap();
+        Page<Position> posPage = positionService.page(new Page(pageInfo.getCurrentPage(), pageInfo.getPageSize()));
+        map.put("data", posPage);
+        List<Position> list = positionService.list();
+        map.put("data", list);
+        return map;
     }
 
     @ApiOperation("查询单个职位信息")
