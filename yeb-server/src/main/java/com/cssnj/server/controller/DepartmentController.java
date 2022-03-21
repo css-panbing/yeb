@@ -1,13 +1,11 @@
 package com.cssnj.server.controller;
 
-
 import com.cssnj.server.common.pojo.SelectTree;
 import com.cssnj.server.common.response.ResponseData;
 import com.cssnj.server.pojo.Department;
 import com.cssnj.server.service.IDepartmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
