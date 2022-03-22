@@ -30,11 +30,11 @@ public class MenuRoleServiceImpl extends ServiceImpl<MenuRoleMapper, MenuRole> i
      */
     @Override
     @Transactional
-    public ResponseData updateMenuRole(Integer rid, Integer[] mids) {
+    public ResponseData updateMenuRole(Integer rid, String[] mids) {
         //1、通过角色id删除相关记录
         menuRoleMapper.delete(new QueryWrapper<MenuRole>().eq("rid", rid));
         if(mids == null || mids.length == 0){
-            ResponseData.success("更新成功");
+            return ResponseData.success("更新成功");
         }
         //2、重新添加
         Integer result = menuRoleMapper.insertList(rid, mids);

@@ -21,6 +21,6 @@ public interface IMenuRoleService extends IService<MenuRole> {
      * @param mids
      * @return
      */
-    ResponseData updateMenuRole(Integer rid, Integer[] mids);
+    ResponseData updateMenuRole(Integer rid, String[] mids);
 
 }

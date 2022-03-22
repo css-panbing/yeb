@@ -89,8 +89,12 @@ public class PermissionController {
 
     @ApiOperation("更新角色关联菜单")
     @PutMapping("/role/menus/")
-    public ResponseData updateRole(Integer rid, Integer [] mids){
-        return menuRoleService.updateMenuRole(rid, mids);
+    public ResponseData updateRole(Integer rid, String mids){
+        String[] menuIds = null;
+        if(!"".equals(mids)){
+            menuIds = mids.split(",");
+        }
+        return menuRoleService.updateMenuRole(rid, menuIds);
     }
 
 }

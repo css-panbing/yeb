@@ -23,6 +23,6 @@ public interface MenuRoleMapper extends BaseMapper<MenuRole> {
      * @param mids 菜单id
      * @return 返回成功条数
      */
-    Integer insertList(@Param("rid") Integer rid, @Param("mids") Integer[] mids);
+    Integer insertList(@Param("rid") Integer rid, @Param("mids") String[] mids);
 
 }
