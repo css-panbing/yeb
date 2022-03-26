@@ -1,6 +1,6 @@
 package com.cssnj.server.exception;
 
-import com.cssnj.server.common.response.ResponseData;
+import com.cssnj.server.common.response.RespData;
 import org.apache.log4j.Logger;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,19 +21,19 @@ public class GlobalException {
     static final Logger logger = Logger.getLogger(GlobalException.class);
 
     @ExceptionHandler(SQLException.class)
-    public ResponseData mySqlException(SQLException sqlException){
+    public RespData mySqlException(SQLException sqlException){
         if(sqlException instanceof SQLIntegrityConstraintViolationException){
             logger.error("数据库操作异常", sqlException);
-            return ResponseData.error("该数据有关联数据，操作失败！");
+            return RespData.error("该数据有关联数据，操作失败！");
         }
         logger.error("数据库异常", sqlException);
-        return ResponseData.error("数据库异常");
+        return RespData.error("数据库异常");
     }
 
     @ExceptionHandler(RedisConnectionFailureException.class)
-    public ResponseData redisConnectionFailureException(RedisConnectionFailureException redisException){
+    public RespData redisConnectionFailureException(RedisConnectionFailureException redisException){
         logger.error("Redis连接异常", redisException);
-        return ResponseData.error("Redis连接异常");
+        return RespData.error("Redis连接异常");
     }
 
 }

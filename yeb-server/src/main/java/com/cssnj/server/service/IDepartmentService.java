@@ -1,7 +1,7 @@
 package com.cssnj.server.service;
 
 import com.cssnj.server.common.pojo.SelectTree;
-import com.cssnj.server.common.response.ResponseData;
+import com.cssnj.server.common.response.RespData;
 import com.cssnj.server.pojo.Department;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -26,14 +26,14 @@ public interface IDepartmentService extends IService<Department> {
      * @param department
      * @return
      */
-    ResponseData addDepartment(Department department);
+    RespData addDepartment(Department department);
 
     /**
      * 删除部门
      * @param id
      * @return
      */
-    ResponseData deleteDepartment(Integer id);
+    RespData deleteDepartment(Integer id);
 
     /**
      * 通过查询条件查询部门信息

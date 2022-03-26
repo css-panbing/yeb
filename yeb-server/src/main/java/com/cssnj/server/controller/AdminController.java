@@ -1,7 +1,7 @@
 package com.cssnj.server.controller;
 
 
-import com.cssnj.server.common.response.ResponseData;
+import com.cssnj.server.common.response.RespData;
 import com.cssnj.server.pojo.Admin;
 import com.cssnj.server.pojo.Role;
 import com.cssnj.server.service.IAdminService;
@@ -44,25 +44,25 @@ public class AdminController {
 
     @ApiOperation("更新操作员基本信息")
     @PutMapping("/")
-    public ResponseData updateAdmin(@RequestBody Admin admin){
+    public RespData updateAdmin(@RequestBody Admin admin){
         if(adminService.updateById(admin)){
-            return ResponseData.success("更新成功");
+            return RespData.success("更新成功");
         }
-        return ResponseData.error("更新失败");
+        return RespData.error("更新失败");
     }
 
     @ApiOperation("删除操作员信息")
     @DeleteMapping("/{id}")
-    public ResponseData deleteAdmin(@PathVariable Integer id){
+    public RespData deleteAdmin(@PathVariable Integer id){
         if(adminService.removeById(id)){
-            return ResponseData.success("删除成功");
+            return RespData.success("删除成功");
         }
-        return ResponseData.error("删除失败");
+        return RespData.error("删除失败");
     }
 
     @ApiOperation("更新操作员角色")
     @PutMapping("/adminRoles")
-    public ResponseData updateAdminRoles(Integer adminId, String rids){
+    public RespData updateAdminRoles(Integer adminId, String rids){
         String [] roleIds = null;
         if(!"".equals(rids)){
             roleIds = rids.split(",");

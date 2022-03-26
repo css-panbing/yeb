@@ -1,7 +1,7 @@
 package com.cssnj.server.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.cssnj.server.common.response.ResponseData;
+import com.cssnj.server.common.response.RespData;
 import com.cssnj.server.common.utils.AdminUtils;
 import com.cssnj.server.config.security.component.JwtTokenUtil;
 import com.cssnj.server.mapper.AdminRoleMapper;
@@ -60,22 +60,22 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
      * @return
      */
     @Override
-    public ResponseData login(AdminLogin adminLogin, HttpServletRequest request) {
+    public RespData login(AdminLogin adminLogin, HttpServletRequest request) {
         String captcha = (String) request.getSession().getAttribute("captcha");
         //从session中获取验证码与前端传递过来的验证码进行匹配
         if("".equals(adminLogin.getCode()) || !captcha.equalsIgnoreCase(adminLogin.getCode())){
-            return ResponseData.error("验证码错误，请重新输入！");
+            return RespData.error("验证码错误，请重新输入！");
         }
         //重写UserDetailsService.loadUserByUsername()方法实现登录（通过前端传递的用户名获取用户信息）
         UserDetails userDetails = userDetailsService.loadUserByUsername(adminLogin.getUsername());
         if(userDetails == null){
-            return ResponseData.error("用户名不存在！");
+            return RespData.error("用户名不存在！");
         }
         if(!passwordEncoder.matches(adminLogin.getPassword(), userDetails.getPassword())){
-            return ResponseData.error("密码错误！");
+            return RespData.error("密码错误！");
         }
         if(!userDetails.isEnabled()){
-            return ResponseData.error("账号被禁用，请联系管理员！");
+            return RespData.error("账号被禁用，请联系管理员！");
         }
         //登录成功，更新Security登录用户信息（把登录用户信息放在Security全文中）
         UsernamePasswordAuthenticationToken authenticationToken =
@@ -86,7 +86,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         Map<String, Object> tokenMap = new HashMap<>();
         tokenMap.put("token", token);
         tokenMap.put("tokenHead", tokenHead);//头部信息，供前端放在请求头中
-        return ResponseData.success("登录成功！", tokenMap);
+        return RespData.success("登录成功！", tokenMap);
     }
 
     /**
@@ -131,18 +131,18 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
      */
     @Override
     @Transactional
-    public ResponseData updateAdminRoles(Integer adminId, String[] roleIds) {
+    public RespData updateAdminRoles(Integer adminId, String[] roleIds) {
         //1、先删除该操作员关联的角色
         adminRoleMapper.delete(new QueryWrapper<AdminRole>().eq("adminId", adminId));
         //2、重新查询角色数据
         if(roleIds == null || roleIds.length == 0){
-            return ResponseData.success("更新成功");
+            return RespData.success("更新成功");
         }
         Integer result = adminRoleMapper.insertAdminRoles(adminId, roleIds);
         if(result == roleIds.length){
-            return ResponseData.success("更新成功");
+            return RespData.success("更新成功");
         }
-        return ResponseData.error("更新失败");
+        return RespData.error("更新失败");
     }
 
 }

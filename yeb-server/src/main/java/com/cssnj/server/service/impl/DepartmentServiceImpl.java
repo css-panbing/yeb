@@ -2,7 +2,7 @@ package com.cssnj.server.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cssnj.server.common.pojo.SelectTree;
-import com.cssnj.server.common.response.ResponseData;
+import com.cssnj.server.common.response.RespData;
 import com.cssnj.server.common.utils.DeptTreeNodeUtil;
 import com.cssnj.server.common.utils.SelectTreeNodeUtil;
 import com.cssnj.server.pojo.Department;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -72,9 +71,9 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
      */
     @Override
     @Transactional
-    public ResponseData addDepartment(Department department) {
+    public RespData addDepartment(Department department) {
         if(department.getParentId() == null){
-            return ResponseData.error("请确认该部门的上级部门");
+            return RespData.error("请确认该部门的上级部门");
         }
         department.setEnabled(true);
         department.setCreateDate(LocalDateTime.now());
@@ -85,9 +84,9 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
         //2、更新父部门isParent属性
         int update = departmentMapper.updateById(parentDept);
         if(insert == 1 && update == 1){
-            return ResponseData.success("添加部门成功");
+            return RespData.success("添加部门成功");
         }
-        return ResponseData.error("添加部门失败");
+        return RespData.error("添加部门失败");
     }
 
     /**
@@ -97,11 +96,11 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
      */
     @Override
     @Transactional
-    public ResponseData deleteDepartment(Integer id) {
+    public RespData deleteDepartment(Integer id) {
         //1、判断是否存在子部门
         Integer count = departmentMapper.selectCount(new QueryWrapper<Department>().eq("parentId", id));
         if(count > 0){
-            return ResponseData.error("该部门存在子部门，无法删除");
+            return RespData.error("该部门存在子部门，无法删除");
         }
         Department delDept = departmentMapper.selectById(id);
         //2、删除该部门
@@ -115,13 +114,13 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
             delParentDept.setIsParent(false);
             int update = departmentMapper.updateById(delParentDept);
             if(delete == 1 && update == 1){
-                return ResponseData.success("删除成功");
+                return RespData.success("删除成功");
             }
         }
         if(delete == 1){
-            return ResponseData.success("删除成功");
+            return RespData.success("删除成功");
         }
-        return ResponseData.error("删除失败");
+        return RespData.error("删除失败");
     }
 
 }

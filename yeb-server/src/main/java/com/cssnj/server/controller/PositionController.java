@@ -1,6 +1,6 @@
 package com.cssnj.server.controller;
 
-import com.cssnj.server.common.response.ResponseData;
+import com.cssnj.server.common.response.RespData;
 import com.cssnj.server.pojo.Position;
 import com.cssnj.server.service.IPositionService;
 import io.swagger.annotations.Api;
@@ -40,40 +40,40 @@ public class PositionController {
 
     @ApiOperation("添加职位信息")
     @PostMapping("/")
-    public ResponseData addPosition(@RequestBody Position position){
+    public RespData addPosition(@RequestBody Position position){
         position.setCreateDate(LocalDateTime.now());
         if(positionService.save(position)){
-            return ResponseData.success("添加成功");
+            return RespData.success("添加成功");
         }
-        return ResponseData.error("添加失败");
+        return RespData.error("添加失败");
     }
 
     @ApiOperation("更新职位信息")
     @PutMapping("/")
-    public ResponseData updatePosition(@RequestBody Position position){
+    public RespData updatePosition(@RequestBody Position position){
         if(positionService.updateById(position)){
-            return ResponseData.success("更新成功");
+            return RespData.success("更新成功");
         }
-        return ResponseData.error("更新失败");
+        return RespData.error("更新失败");
     }
 
     @ApiOperation("删除职位信息")
     @DeleteMapping("/{id}")
-    public ResponseData deletePosition(@PathVariable("id") Integer id){
+    public RespData deletePosition(@PathVariable("id") Integer id){
         if(positionService.removeById(id)){
-            return ResponseData.success("删除成功");
+            return RespData.success("删除成功");
         }
-        return ResponseData.error("删除失败");
+        return RespData.error("删除失败");
     }
 
     @ApiOperation("批量删除职位信息")
     @DeleteMapping("/")
-    public ResponseData deletePositions(String ids){
+    public RespData deletePositions(String ids){
         String[] split = ids.split(",");
         if(positionService.removeByIds(Arrays.asList(split))){
-            return ResponseData.success("删除成功");
+            return RespData.success("删除成功");
         }
-        return ResponseData.error("删除失败");
+        return RespData.error("删除失败");
     }
 
 }

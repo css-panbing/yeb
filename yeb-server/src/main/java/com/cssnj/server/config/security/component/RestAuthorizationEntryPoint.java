@@ -1,6 +1,6 @@
 package com.cssnj.server.config.security.component;
 
-import com.cssnj.server.common.response.ResponseData;
+import com.cssnj.server.common.response.RespData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -26,7 +26,7 @@ public class RestAuthorizationEntryPoint implements AuthenticationEntryPoint {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        ResponseData data = ResponseData.error("尚未登录，请登录！");
+        RespData data = RespData.error("尚未登录，请登录！");
         data.setCode(401);
         out.write(new ObjectMapper().writeValueAsString(data));
         out.flush();//输出流

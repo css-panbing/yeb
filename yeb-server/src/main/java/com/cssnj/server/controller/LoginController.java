@@ -1,6 +1,6 @@
 package com.cssnj.server.controller;
 
-import com.cssnj.server.common.response.ResponseData;
+import com.cssnj.server.common.response.RespData;
 import com.cssnj.server.pojo.Admin;
 import com.cssnj.server.pojo.AdminLogin;
 import com.cssnj.server.service.IAdminService;
@@ -32,9 +32,9 @@ public class LoginController {
 
     @ApiOperation(value = "登录并返回Token")
     @PostMapping("/login")
-    public ResponseData login(@RequestBody AdminLogin adminLogin, HttpServletRequest request){
-        ResponseData responseData = adminService.login(adminLogin, request);
-        return responseData;
+    public RespData login(@RequestBody AdminLogin adminLogin, HttpServletRequest request){
+        RespData respData = adminService.login(adminLogin, request);
+        return respData;
     }
 
     @ApiOperation(value = "获取当前登录用户信息")
@@ -57,8 +57,8 @@ public class LoginController {
      */
     @ApiOperation("退出登录")
     @PostMapping("/logout")
-    public ResponseData logout(){
-        return ResponseData.success("注销成功！");
+    public RespData logout(){
+        return RespData.success("注销成功！");
     }
 
 }

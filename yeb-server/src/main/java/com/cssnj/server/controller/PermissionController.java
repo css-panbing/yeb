@@ -1,7 +1,7 @@
 package com.cssnj.server.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.cssnj.server.common.response.ResponseData;
+import com.cssnj.server.common.response.RespData;
 import com.cssnj.server.pojo.Menu;
 import com.cssnj.server.pojo.MenuRole;
 import com.cssnj.server.pojo.Role;
@@ -43,23 +43,23 @@ public class PermissionController {
 
     @ApiOperation("添加角色")
     @PostMapping("/role/")
-    public ResponseData addRole(@RequestBody Role role){
+    public RespData addRole(@RequestBody Role role){
         if(!role.getName().startsWith("ROLE_")){
             role.setName("ROLE_"+role.getName());
         }
         if(roleService.save(role)){
-           return ResponseData.success("添加成功");
+           return RespData.success("添加成功");
         }
-        return ResponseData.error("添加失败");
+        return RespData.error("添加失败");
     }
 
     @ApiOperation("删除角色")
     @DeleteMapping("/role/{rid}")
-    public ResponseData deleteRole(@PathVariable("rid") Integer rid){
+    public RespData deleteRole(@PathVariable("rid") Integer rid){
         if(roleService.removeById(rid)){
-            return ResponseData.success("删除成功");
+            return RespData.success("删除成功");
         }
-        return ResponseData.error("删除失败");
+        return RespData.error("删除失败");
     }
 
     @ApiOperation("查询所有菜单")
@@ -89,7 +89,7 @@ public class PermissionController {
 
     @ApiOperation("更新角色关联菜单")
     @PutMapping("/role/menus/")
-    public ResponseData updateRole(Integer rid, String mids){
+    public RespData updateRole(Integer rid, String mids){
         String[] menuIds = null;
         if(!"".equals(mids)){
             menuIds = mids.split(",");

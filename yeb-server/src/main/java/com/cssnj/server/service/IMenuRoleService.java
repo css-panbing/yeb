@@ -1,11 +1,8 @@
 package com.cssnj.server.service;
 
-import com.cssnj.server.common.response.ResponseData;
-import com.cssnj.server.pojo.Menu;
+import com.cssnj.server.common.response.RespData;
 import com.cssnj.server.pojo.MenuRole;
 import com.baomidou.mybatisplus.extension.service.IService;
-
-import java.util.List;
 
 /**
  *  角色菜单关联类
@@ -21,6 +18,6 @@ public interface IMenuRoleService extends IService<MenuRole> {
      * @param mids
      * @return
      */
-    ResponseData updateMenuRole(Integer rid, String[] mids);
+    RespData updateMenuRole(Integer rid, String[] mids);
 
 }

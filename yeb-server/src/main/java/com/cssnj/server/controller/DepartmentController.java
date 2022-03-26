@@ -1,7 +1,7 @@
 package com.cssnj.server.controller;
 
 import com.cssnj.server.common.pojo.SelectTree;
-import com.cssnj.server.common.response.ResponseData;
+import com.cssnj.server.common.response.RespData;
 import com.cssnj.server.pojo.Department;
 import com.cssnj.server.service.IDepartmentService;
 import io.swagger.annotations.Api;
@@ -44,13 +44,13 @@ public class DepartmentController {
 
     @ApiOperation(value = "添加部门")
     @PostMapping("/")
-    public ResponseData addDepartment(@RequestBody Department department){
+    public RespData addDepartment(@RequestBody Department department){
         return departmentService.addDepartment(department);
     }
 
     @ApiOperation(value = "删除部门")
     @DeleteMapping("/{id}")
-    public ResponseData deleteDepartment(@PathVariable("id") Integer id){
+    public RespData deleteDepartment(@PathVariable("id") Integer id){
         return departmentService.deleteDepartment(id);
     }
 

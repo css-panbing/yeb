@@ -1,7 +1,7 @@
 package com.cssnj.server.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.cssnj.server.common.response.ResponseData;
+import com.cssnj.server.common.response.RespData;
 import com.cssnj.server.pojo.MenuRole;
 import com.cssnj.server.mapper.MenuRoleMapper;
 import com.cssnj.server.service.IMenuRoleService;
@@ -30,18 +30,18 @@ public class MenuRoleServiceImpl extends ServiceImpl<MenuRoleMapper, MenuRole> i
      */
     @Override
     @Transactional
-    public ResponseData updateMenuRole(Integer rid, String[] mids) {
+    public RespData updateMenuRole(Integer rid, String[] mids) {
         //1、通过角色id删除相关记录
         menuRoleMapper.delete(new QueryWrapper<MenuRole>().eq("rid", rid));
         if(mids == null || mids.length == 0){
-            return ResponseData.success("更新成功");
+            return RespData.success("更新成功");
         }
         //2、重新添加
         Integer result = menuRoleMapper.insertList(rid, mids);
         if(result == mids.length){
-            return ResponseData.success("更新成功");
+            return RespData.success("更新成功");
         }
-        return ResponseData.error("更新失败");
+        return RespData.error("更新失败");
     }
 
 }

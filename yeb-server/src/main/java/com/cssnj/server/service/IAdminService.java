@@ -1,6 +1,6 @@
 package com.cssnj.server.service;
 
-import com.cssnj.server.common.response.ResponseData;
+import com.cssnj.server.common.response.RespData;
 import com.cssnj.server.pojo.Admin;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cssnj.server.pojo.AdminLogin;
@@ -23,7 +23,7 @@ public interface IAdminService extends IService<Admin> {
      * @param request
      * @return
      */
-    ResponseData login(AdminLogin adminLogin, HttpServletRequest request);
+    RespData login(AdminLogin adminLogin, HttpServletRequest request);
 
     /**
      * 根据用户名获取用户信息
@@ -52,5 +52,5 @@ public interface IAdminService extends IService<Admin> {
      * @param roleIds
      * @return
      */
-    ResponseData updateAdminRoles(Integer adminId, String[] roleIds);
+    RespData updateAdminRoles(Integer adminId, String[] roleIds);
 }

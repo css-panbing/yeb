@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseData {
+public class RespData {
     private long code;
     private String message;
     private Object data;
@@ -22,8 +22,8 @@ public class ResponseData {
      * @param message
      * @return
      */
-    public static ResponseData success(String message){
-        return new ResponseData(200, message, null);
+    public static RespData success(String message){
+        return new RespData(200, message, null);
     }
 
     /**
@@ -32,8 +32,8 @@ public class ResponseData {
      * @param data
      * @return
      */
-    public static ResponseData success(String message, Object data){
-        return new ResponseData(200, message, data);
+    public static RespData success(String message, Object data){
+        return new RespData(200, message, data);
     }
 
     /**
@@ -41,8 +41,8 @@ public class ResponseData {
      * @param message
      * @return
      */
-    public static ResponseData error(String message){
-        return new ResponseData(500, message, null);
+    public static RespData error(String message){
+        return new RespData(500, message, null);
     }
 
     /**
@@ -51,8 +51,8 @@ public class ResponseData {
      * @param data
      * @return
      */
-    public static ResponseData error(String message, Object data){
-        return new ResponseData(500, message, data);
+    public static RespData error(String message, Object data){
+        return new RespData(500, message, data);
     }
 
 }

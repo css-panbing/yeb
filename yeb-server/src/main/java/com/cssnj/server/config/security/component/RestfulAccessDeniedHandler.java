@@ -1,6 +1,6 @@
 package com.cssnj.server.config.security.component;
 
-import com.cssnj.server.common.response.ResponseData;
+import com.cssnj.server.common.response.RespData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -26,7 +26,7 @@ public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        ResponseData data = ResponseData.error("权限不足，请联系管理员！");
+        RespData data = RespData.error("权限不足，请联系管理员！");
         data.setCode(403);
         out.write(new ObjectMapper().writeValueAsString(data));
         out.flush();
