@@ -2,11 +2,14 @@ package com.cssnj.server.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cssnj.server.common.response.ResponseData;
+import com.cssnj.server.common.utils.AdminUtils;
 import com.cssnj.server.config.security.component.JwtTokenUtil;
+import com.cssnj.server.mapper.AdminRoleMapper;
 import com.cssnj.server.mapper.RoleMapper;
 import com.cssnj.server.pojo.Admin;
 import com.cssnj.server.mapper.AdminMapper;
 import com.cssnj.server.pojo.AdminLogin;
+import com.cssnj.server.pojo.AdminRole;
 import com.cssnj.server.pojo.Role;
 import com.cssnj.server.service.IAdminService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -18,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -25,9 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <p>
- *  用户服务实现类
- * </p>
+ * 操作员实现类 AdminServiceImpl
  *
  * @author panbing
  * @since 2021-12-16
@@ -45,6 +47,8 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     private AdminMapper adminMapper;
     @Autowired
     private RoleMapper roleMapper;
+    @Autowired
+    private AdminRoleMapper adminRoleMapper;
 
     @Value("${jwt.tokenHead}")
     private String tokenHead;
@@ -92,7 +96,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
      */
     @Override
     public Admin getAdminByUsername(String username) {
-//        Admin admin = adminMapper.selectOne(new QueryWrapper<Admin>().eq("username", username).eq("enabled", true));
+        //Admin admin = adminMapper.selectOne(new QueryWrapper<Admin>().eq("username", username).eq("enabled", true));
         Admin admin = adminMapper.selectOne(new QueryWrapper<Admin>().eq("username", username));
         return admin;
     }
@@ -106,6 +110,39 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     public List<Role> getRolesWithAdminId(Integer adminId) {
         List<Role> roles = roleMapper.getRolesWithAdminId(adminId);
         return roles;
+    }
+
+    /**
+     * 通过关键字查询操作员信息
+     * @param keywords
+     * @return
+     */
+    @Override
+    public List<Admin> getAdminsByKeywords(String keywords) {
+        Admin currentAdmin = AdminUtils.getCurrentAdmin();
+        return adminMapper.getAdminsByKeywords(currentAdmin.getId(), keywords);
+    }
+
+    /**
+     * 更新操作员角色信息
+     * @param adminId
+     * @param roleIds
+     * @return
+     */
+    @Override
+    @Transactional
+    public ResponseData updateAdminRoles(Integer adminId, String[] roleIds) {
+        //1、先删除该操作员关联的角色
+        adminRoleMapper.delete(new QueryWrapper<AdminRole>().eq("adminId", adminId));
+        //2、重新查询角色数据
+        if(roleIds == null || roleIds.length == 0){
+            return ResponseData.success("更新成功");
+        }
+        Integer result = adminRoleMapper.insertAdminRoles(adminId, roleIds);
+        if(result == roleIds.length){
+            return ResponseData.success("更新成功");
+        }
+        return ResponseData.error("更新失败");
     }
 
 }

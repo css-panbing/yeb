@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * 用户接口
+ * 操作员接口 IAdminService
  *
  * @author panbing
  * @since 2021-12-16
@@ -38,4 +38,19 @@ public interface IAdminService extends IService<Admin> {
      * @return
      */
     List<Role> getRolesWithAdminId(Integer adminId);
+
+    /**
+     * 通过关键字查询操作员
+     * @param keywords
+     * @return
+     */
+    List<Admin> getAdminsByKeywords(String keywords);
+
+    /**
+     * 更新操作员角色信息
+     * @param adminId
+     * @param roleIds
+     * @return
+     */
+    ResponseData updateAdminRoles(Integer adminId, String[] roleIds);
 }

@@ -16,9 +16,35 @@
         <result column="remark" property="remark" />
     </resultMap>
 
+    <!--操作员及角色返回对象-->
+    <resultMap id="AdminWithRole" type="com.cssnj.server.pojo.Admin" extends="BaseResultMap">
+        <collection property="roles" ofType="com.cssnj.server.pojo.Role">
+            <id column="rid" property="id"/>
+            <result column="rname" property="name"/>
+            <result column="rnameZh" property="nameZh"/>
+        </collection>
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, name, phone, telephone, address, enabled, username, password, userFace, remark
     </sql>
+    <!--通过关键字获取操作员信息-->
+    <select id="getAdminsByKeywords" resultMap="AdminWithRole">
+        SELECT
+            a.*,
+            r.id as rid,
+            r.name as rname,
+            r.nameZh as rnameZh
+        FROM
+            t_admin a
+                LEFT JOIN t_admin_role ar ON a.id = ar.adminId
+                LEFT JOIN t_role r ON ar.rid = r.id
+        WHERE
+            a.id != #{id}
+            <if test="keywords != null and keywords != ''">
+                AND a.NAME LIKE CONCAT('%', #{keywords}, '%')
+            </if>
+    </select>
 
 </mapper>

@@ -1,5 +1,6 @@
 package com.cssnj.server.service.impl;
 
+import com.cssnj.server.common.utils.AdminUtils;
 import com.cssnj.server.common.utils.MenuTreeNodeUtil;
 import com.cssnj.server.pojo.Admin;
 import com.cssnj.server.pojo.Menu;
@@ -38,7 +39,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
      */
     @Override
     public List<Menu> getMenusByAdminId() {
-        Admin admin = (Admin) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Admin admin = AdminUtils.getCurrentAdmin();
         ValueOperations<String, Object> valueOperations = redisTemplate.opsForValue();
         // 从Redis中获取菜单数据
         List<Menu> menus = (List<Menu>) valueOperations.get("menu_"+admin.getId());
