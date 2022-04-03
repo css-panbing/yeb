@@ -27,7 +27,7 @@ public class PositionController {
     @ApiOperation("查询所有职位信息")
     @GetMapping("/")
     public List<Position> queryAllPositions(){
-        List<Position> list = positionService.list();
+        List<Position> list = positionService.getPositions();
         return list;
     }
 

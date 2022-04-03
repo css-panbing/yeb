@@ -3,6 +3,8 @@ package com.cssnj.server.service;
 import com.cssnj.server.pojo.Position;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * 职位接口
  *
@@ -11,5 +13,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IPositionService extends IService<Position> {
 
-
+    /**
+     * 获取所有职位
+     * @return
+     */
+    List<Position> getPositions();
 }

@@ -21,7 +21,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
- * 用户类
+ * 操作员类
  *
  * @author panbing
  * @since 2021-12-16
@@ -30,7 +30,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("t_admin")
-@ApiModel(value="Admin对象", description="")
+@ApiModel(value="Admin对象", description="操作员对象")
 public class Admin implements Serializable, UserDetails {
 
     private static final long serialVersionUID = 1L;

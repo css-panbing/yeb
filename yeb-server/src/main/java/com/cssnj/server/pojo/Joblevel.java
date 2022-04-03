@@ -1,5 +1,6 @@
 package com.cssnj.server.pojo;
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -9,20 +10,19 @@ import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 /**
- * <p>
- * 
- * </p>
+ * 职级类
  *
  * @author panbing
  * @since 2021-12-16
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@RequiredArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = false, of = "name")//of表示重写EqualsAndHashCode方法的属性
 @Accessors(chain = true)
 @TableName("t_joblevel")
 @ApiModel(value="Joblevel对象", description="")
@@ -35,6 +35,8 @@ public class Joblevel implements Serializable {
     private Integer id;
 
     @ApiModelProperty(value = "职称名称")
+    @Excel(name = "职称")
+    @NonNull//有参构造时name不能为空
     private String name;
 
     @ApiModelProperty(value = "职称等级")

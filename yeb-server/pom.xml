@@ -30,6 +30,12 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
+    <!--druid连接池-->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>druid-spring-boot-starter</artifactId>
+      <version>1.1.21</version>
+    </dependency>
     <!--lombok 依赖-->
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -46,7 +52,7 @@
     <dependency>
       <groupId>com.baomidou</groupId>
       <artifactId>mybatis-plus-boot-starter</artifactId>
-      <version>3.3.1.tmp</version>
+      <version>3.3.0</version>
     </dependency>
     <!--mybatis-plus 代码生成器依赖-->
     <dependency>
@@ -101,6 +107,20 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-pool2</artifactId>
+    </dependency>
+
+    <!-- hutool 工具类 -->
+    <dependency>
+      <groupId>cn.hutool</groupId>
+      <artifactId>hutool-all</artifactId>
+      <version>5.7.22</version>
+    </dependency>
+
+    <!-- EasyPoi 依赖 -->
+    <dependency>
+      <groupId>cn.afterturn</groupId>
+      <artifactId>easypoi-spring-boot-starter</artifactId>
+      <version>4.2.0</version>
     </dependency>
 
     <!-- log4j日志 -->
