@@ -10,6 +10,7 @@ import com.cssnj.server.pojo.Employee;
 import com.cssnj.server.mapper.EmployeeMapper;
 import com.cssnj.server.service.IEmployeeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.text.DecimalFormat;
@@ -29,6 +30,9 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
 
     @Autowired
     private EmployeeMapper employeeMapper;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
 
     /**
      * 分页查询员工信息
@@ -78,6 +82,8 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         employee.setWorkState("在职");
         employee.setContractTerm(getContractTerm(employee));
         if(employeeMapper.insert(employee) == 1){
+            //发送邮件信息
+            rabbitTemplate.convertAndSend("mail.welcome", employee);
             return RespData.success("添加成功");
         }
         return RespData.error("添加失败");
