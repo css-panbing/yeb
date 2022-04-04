@@ -133,6 +133,16 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     }
 
     /**
+     * 通过ID获取员工信息
+     * @param id
+     * @return
+     */
+    @Override
+    public Employee getEmployeeById(Integer id) {
+        return employeeMapper.getEmployeeById(id);
+    }
+
+    /**
      * 通过合同开始和结束时间计算合同期限
      * @param employee
      * @return

@@ -51,4 +51,11 @@ public interface IEmployeeService extends IService<Employee> {
      * @return
      */
     List<Employee> getAllEmployee();
+
+    /**
+     * 通过主键获取员工信息
+     * @param id
+     * @return
+     */
+    Employee getEmployeeById(Integer id);
 }

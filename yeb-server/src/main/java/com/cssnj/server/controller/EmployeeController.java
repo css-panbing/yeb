@@ -60,6 +60,12 @@ public class EmployeeController {
         return employeeService.getEmployeeByPage(pageParams, employee, beginDateScope);
     }
 
+    @ApiOperation("通过ID获取员工信息")
+    @GetMapping("/{id}")
+    public Employee getEmployeeById(@PathVariable Integer id){
+        return employeeService.getEmployeeById(id);
+    }
+
     @ApiOperation("获取所有政治面貌")
     @GetMapping("/politicsStatus")
     public List<PoliticsStatus> getPoliticsStatus(){

@@ -146,5 +146,33 @@
           AND e.posId = p.id
         ORDER BY e.id
     </select>
+    <select id="getEmployeeById" resultMap="EmployeeInfo">
+        SELECT
+            e.*,
+            n.id AS nId,
+            n.`name` AS nName,
+            ps.id AS psid,
+            ps.`name` AS psName,
+            d.id AS dId,
+            d.`name` AS dName,
+            j.id AS jId,
+            j.`name` AS jName,
+            p.id AS pId,
+            p.`name` AS pName
+        FROM
+            t_employee e,
+            t_nation n,
+            t_politics_status ps,
+            t_department d,
+            t_joblevel j,
+            t_position p
+        WHERE
+            e.nationId = n.id
+          AND e.politicId = ps.id
+          AND e.departmentId = d.id
+          AND e.jobLevelId = j.id
+          AND e.posId = p.id
+          AND e.id = #{id}
+    </select>
 
 </mapper>
