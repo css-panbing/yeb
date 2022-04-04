@@ -102,7 +102,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
             mailLog.setCreateTime(LocalDateTime.now());
             mailLogMapper.insert(mailLog);
             //发送邮件信息
-            rabbitTemplate.convertAndSend("MailConstants.MAIL_EXCHANGE_NAME", MailConstants.MAIL_ROUTING_KEY_NAME,
+            rabbitTemplate.convertAndSend(MailConstants.MAIL_EXCHANGE_NAME, MailConstants.MAIL_ROUTING_KEY_NAME,
                     employee, new CorrelationData(msgId));
             return RespData.success("添加成功");
         }
