@@ -143,6 +143,22 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     }
 
     /**
+     * 获取所有员工工资账套信息
+     * @param pageParams
+     * @return
+     */
+    @Override
+    public RespPageData getEmployeeWithSalary(PageParams pageParams) {
+        // 开启分页
+        Page<Employee> page = new Page<>(pageParams.getCurrentPage(), pageParams.getPageSize());
+        IPage<Employee> result = employeeMapper.getEmployeeWithSalary(page);
+        RespPageData respPageData = new RespPageData();
+        respPageData.setData(result.getRecords());
+        respPageData.setTotal(result.getTotal());
+        return respPageData;
+    }
+
+    /**
      * 通过合同开始和结束时间计算合同期限
      * @param employee
      * @return

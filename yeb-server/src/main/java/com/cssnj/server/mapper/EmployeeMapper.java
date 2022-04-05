@@ -38,4 +38,11 @@ public interface EmployeeMapper extends BaseMapper<Employee> {
      * @return
      */
     Employee getEmployeeById(Integer id);
+
+    /**
+     * 获取所有员工工资账套信息
+     * @param page
+     * @return
+     */
+    IPage<Employee> getEmployeeWithSalary(Page<Employee> page);
 }

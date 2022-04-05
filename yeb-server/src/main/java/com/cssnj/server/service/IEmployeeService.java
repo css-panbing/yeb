@@ -58,4 +58,11 @@ public interface IEmployeeService extends IService<Employee> {
      * @return
      */
     Employee getEmployeeById(Integer id);
+
+    /**
+     * 获取所有员工工资账套信息
+     * @param pageParams
+     * @return
+     */
+    RespPageData getEmployeeWithSalary(PageParams pageParams);
 }
