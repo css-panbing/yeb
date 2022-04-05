@@ -52,8 +52,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/login", "/logout", "/captcha", "/css/**", "/js/**", "/index.html",
-                "favicon.ico", "/doc.html", "/webjars/**", "/swagger-resources/**", "/v2/api-docs/**");
+        web.ignoring().antMatchers(
+                "/login",
+                "/logout",
+                "/captcha",
+                "/css/**",
+                "/js/**",
+                "/index.html",
+                "favicon.ico",
+                "/doc.html",
+                "/webjars/**",
+                "/swagger-resources/**",
+                "/v2/api-docs/**",
+                "/ws/**"
+        );
     }
 
     @Override
