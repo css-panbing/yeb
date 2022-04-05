@@ -2,6 +2,7 @@ package com.cssnj.server.controller;
 
 import com.cssnj.server.pojo.Admin;
 import com.cssnj.server.service.IAdminService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import java.util.List;
  * @date 2022/4/5 12:01
  */
 @RestController
+@Api(tags = "在线聊天")
 @RequestMapping("/chat")
 public class ChatController {
 

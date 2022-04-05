@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  */
 @SpringBootApplication
 @MapperScan("com.cssnj.server.mapper")
-@EnableScheduling
+//@EnableScheduling
 public class YebApplication {
 
     public static void main(String[] args) {
