@@ -9,9 +9,14 @@ import com.cssnj.server.service.IRoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 操作员管理
@@ -68,6 +73,34 @@ public class AdminController {
             roleIds = rids.split(",");
         }
         return adminService.updateAdminRoles(adminId, roleIds);
+    }
+
+    @ApiOperation("更新当前用户信息")
+    @PutMapping("/info")
+    public RespData updateAdminInfo(@RequestBody Admin admin, Authentication authentication){
+        if(adminService.updateById(admin)){
+            //在SpringSecurity中重新设置Authentication对象
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(admin, "", authentication.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            return RespData.success("更新成功");
+        }
+        return RespData.error("更新失败");
+    }
+
+    @ApiOperation("更新用户密码")
+    @PutMapping("/password")
+    public RespData updatePassword(@RequestBody Map<String, Object> map){
+        String oldPassword = (String) map.get("oldPassword");
+        String newPassword = (String) map.get("newPassword");
+        Integer adminId = (Integer) map.get("adminId");
+        return adminService.updateAdminPassword(oldPassword, newPassword, adminId);
+
+    }
+
+    @ApiOperation("更新用户头像")
+    @PostMapping("/userFace")
+    public RespData updateAdminUserFace(MultipartFile file, Integer adminId, Authentication authentication){
+        return adminService.updateAdminUserFace(file, adminId, authentication);
     }
 
 }

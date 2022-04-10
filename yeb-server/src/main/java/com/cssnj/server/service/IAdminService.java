@@ -5,6 +5,8 @@ import com.cssnj.server.pojo.Admin;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cssnj.server.pojo.AdminLogin;
 import com.cssnj.server.pojo.Role;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -53,4 +55,22 @@ public interface IAdminService extends IService<Admin> {
      * @return
      */
     RespData updateAdminRoles(Integer adminId, String[] roleIds);
+
+    /**
+     * 更新用户密码
+     * @param oldPassword
+     * @param newPassword
+     * @param adminId
+     * @return
+     */
+    RespData updateAdminPassword(String oldPassword, String newPassword, Integer adminId);
+
+    /**
+     * 更新用户头像
+     * @param file
+     * @param adminId
+     * @param authentication
+     * @return
+     */
+    RespData updateAdminUserFace(MultipartFile file, Integer adminId, Authentication authentication);
 }

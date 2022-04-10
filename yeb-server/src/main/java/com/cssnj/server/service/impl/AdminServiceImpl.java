@@ -1,6 +1,7 @@
 package com.cssnj.server.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.cssnj.server.common.fastdfs.FastDFSClient;
 import com.cssnj.server.common.response.RespData;
 import com.cssnj.server.common.utils.AdminUtils;
 import com.cssnj.server.config.security.component.JwtTokenUtil;
@@ -16,12 +17,15 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -49,6 +53,8 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     private RoleMapper roleMapper;
     @Autowired
     private AdminRoleMapper adminRoleMapper;
+    @Autowired
+    private FastDFSClient fastDFSClient;
 
     @Value("${jwt.tokenHead}")
     private String tokenHead;
@@ -141,6 +147,52 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         Integer result = adminRoleMapper.insertAdminRoles(adminId, roleIds);
         if(result == roleIds.length){
             return RespData.success("更新成功");
+        }
+        return RespData.error("更新失败");
+    }
+
+    /**
+     * 更新用户密码
+     * @param oldPassword
+     * @param newPassword
+     * @param adminId
+     * @return
+     */
+    @Override
+    public RespData updateAdminPassword(String oldPassword, String newPassword, Integer adminId) {
+        Admin admin = adminMapper.selectById(adminId);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        //校验旧密码是否正确
+        if(encoder.matches(oldPassword, admin.getPassword())){
+            admin.setPassword(encoder.encode(newPassword));
+            int result = adminMapper.updateById(admin);
+            if(result == 1){
+                return RespData.success("更新成功");
+            }
+            return RespData.error("更新失败");
+        }else {
+            return RespData.error("旧密码输入错误");
+        }
+    }
+
+    /**
+     * 更新用户头像
+     * @param file
+     * @param adminId
+     * @param authentication
+     * @return
+     */
+    @Override
+    public RespData updateAdminUserFace(MultipartFile file, Integer adminId, Authentication authentication) {
+        String url = fastDFSClient.uploadFile(file);
+        Admin admin = adminMapper.selectById(adminId);
+        admin.setUserFace(url);
+        int result = adminMapper.updateById(admin);
+        if(result == 1){
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(admin, null, authentication.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            return RespData.success("更新成功", url);
         }
         return RespData.error("更新失败");
     }

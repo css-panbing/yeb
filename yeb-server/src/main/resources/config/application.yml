@@ -17,6 +17,13 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       validation-query: SELECT 1 FROM DUAL
 
+  servlet:
+    multipart:
+      # 设置单个文件大小
+      max-file-size: 20MB
+      # 设置单次请求文件的总大小
+      max-request-size: 100MB
+
   redis:
     # 读取超时时间
     timeout: 10000ms
@@ -53,6 +60,21 @@ spring:
     publisher-confirm-type: correlated
     # 消息失败回调
     publisher-returns: true
+
+# FastDFS配置
+fdfs:
+  # 读取超时时间
+  so-timeout: 1501
+  # 连接超时时间
+  connect-timeout: 601
+  # 缩略图生成参数
+  thumb-image:
+    width: 150
+    height: 150
+  # Tracker服务配置地址，可多个
+  tracker-list:
+    - 119.3.64.221:22122
+  web-server-url: http://119.3.64.221/
 
 # Mybatis-plus配置
 mybatis-plus:
