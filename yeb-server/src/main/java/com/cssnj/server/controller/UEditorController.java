@@ -16,15 +16,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * 百度富文本编辑 控制器
  * @author panbing
  * @date 2022/4/8 22:13
  */
 @RestController
 @RequestMapping("/UEditor")
 @CrossOrigin//允许跨域
-public class UEController {
+public class UEditorController {
 
-    private static final Logger logger = LoggerFactory.getLogger(UEController.class);
+    private static final Logger logger = LoggerFactory.getLogger(UEditorController.class);
     @Autowired
     private FastDFSClient fastDFSClient;
 
