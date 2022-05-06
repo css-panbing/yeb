@@ -76,6 +76,13 @@ fdfs:
     - 119.3.64.221:22122
   web-server-url: http://119.3.64.221/
 
+# Minio文件系统
+minio:
+  url: http://127.0.0.1:9000
+  accessKey: minioadmin
+  secretKey: minioadmin
+  bucketName: yeb
+
 # Mybatis-plus配置
 mybatis-plus:
   # 配置Mapper映射文件
