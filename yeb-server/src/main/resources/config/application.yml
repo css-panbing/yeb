@@ -10,7 +10,7 @@ spring:
     allow-circular-references: true
   # 数据源配置
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/yeb?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://127.0.0.1:3306/yeb?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true
     username: root
     password: 123456
     druid:
@@ -60,6 +60,13 @@ spring:
     publisher-confirm-type: correlated
     # 消息失败回调
     publisher-returns: true
+
+# flowable工作流
+flowable:
+  # 关闭定时任务JOB
+  async-executor-activate: false
+  # 设置成true，当flowable发现库与数据库表结构不一致时，会将数据库表结构生成最新版本。
+  database-schema-update: true
 
 # FastDFS配置
 fdfs:

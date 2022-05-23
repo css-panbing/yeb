@@ -3,6 +3,7 @@ package com.cssnj.server.mapper;
 import com.cssnj.server.pojo.AdminRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 /**
  * 操作员 Mapper接口
@@ -10,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
  * @author panbing
  * @since 2021-12-16
  */
+@Repository
 public interface AdminRoleMapper extends BaseMapper<AdminRole> {
 
     /**
