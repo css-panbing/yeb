@@ -44,6 +44,7 @@ public class UEditorController {
             String suffix = imageName.substring(imageName.lastIndexOf(".") + 1);
             logger.info("图片名称："+imageName+"，图片大小："+imageSize+"，图片类型："+suffix);
             String url = fastDFSClient.uploadFile(file);
+            //封装百度富文本返回数据格式
             JSONObject jsonObject = new JSONObject(RespUEditorData.success(url,imageName,suffix,imageSize,imageName));
             return jsonObject.toString();
         }else if("uploadfile".equals(action)){//上传文件
@@ -52,6 +53,7 @@ public class UEditorController {
             String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
             logger.info("文件名称："+fileName+"，文件大小："+fileSize+"，文件类型："+suffix);
             String url = fastDFSClient.uploadFile(file);
+            //封装百度富文本返回数据格式
             JSONObject jsonObject = new JSONObject(RespUEditorData.success(url,fileName,suffix,fileSize,fileName));
             return jsonObject.toString();
         }
